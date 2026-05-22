@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Question text loads here..."
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#111827"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Option A"
+        android:backgroundTint="#F3F4F6"
+        android:textColor="#111827"
+        android:textAlignment="textStart"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Option B"
+        android:backgroundTint="#F3F4F6"
+        android:textColor="#111827"
+        android:textAlignment="textStart"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Option C"
+        android:backgroundTint="#F3F4F6"
+        android:textColor="#111827"
+        android:textAlignment="textStart"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Option D"
+        android:backgroundTint="#F3F4F6"
+        android:textColor="#111827"
+        android:textAlignment="textStart"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tvTrivia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trivia entry:"
+        android:textSize="14sp"
+        android:textColor="#4B5563"
+        android:background="#E5E7EB"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="NEXT ITEM"
+        android:textStyle="bold"
+        android:backgroundTint="#111827"
+        android:textColor="#FFFFFF" />
+</LinearLayout>

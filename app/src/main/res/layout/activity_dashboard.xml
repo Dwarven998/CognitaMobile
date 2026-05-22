@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#F9FAFB">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Process in motion."
+        android:textSize="14sp"
+        android:textColor="#6B7280"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tvRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GOLD RANK"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#111827"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:id="@+id/tvSp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="12,840 SP"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#2563EB"
+        android:layout_marginBottom="48dp"/>
+
+    <Button
+        android:id="@+id/btnBlitz"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:text="DAILY BLITZ"
+        android:textStyle="bold"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#2563EB"
+        android:layout_marginBottom="16dp"
+        android:elevation="4dp"/>
+
+    <Button
+        android:id="@+id/btnMock"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:text="MOCK EXAM"
+        android:textStyle="bold"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#111827"
+        android:elevation="4dp"/>
+</LinearLayout>

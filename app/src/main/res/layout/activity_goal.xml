@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Your Target"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#111827"
+        android:textAlignment="center"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select the academic context you are preparing for. The system will adapt the blueprint quotas accordingly."
+        android:textSize="14sp"
+        android:textColor="#4B5563"
+        android:textAlignment="center"
+        android:layout_marginBottom="48dp" />
+
+    <Button
+        android:id="@+id/btnDostSei"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="DOST-SEI\nUndergraduate Scholarship"
+        android:textStyle="bold"
+        android:backgroundTint="#F3F4F6"
+        android:textColor="#2563EB" />
+
+</LinearLayout>
