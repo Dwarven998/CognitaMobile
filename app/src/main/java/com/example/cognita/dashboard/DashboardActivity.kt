@@ -1,58 +1,93 @@
 package com.example.cognita.dashboard
 
-
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.cognita.R
 import com.example.cognita.exam.ActiveExamActivity
+import com.example.cognita.goal.GoalActivity
+import com.example.cognita.results.ResultsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class DashboardActivity : AppCompatActivity() {
 
-    private val viewModel: DashboardViewModel by viewModels()
+    private lateinit var viewModel: DashboardViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Reverted back to the standard setContentView approach
         setContentView(R.layout.activity_dashboard)
 
-        val tvRank = findViewById<TextView>(R.id.tvRank)
-        val tvSp = findViewById<TextView>(R.id.tvSp)
-        val btnBlitz = findViewById<Button>(R.id.btnBlitz)
-        val btnMock = findViewById<Button>(R.id.btnMock)
+        // Initialize ViewModel
+        viewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
 
-        val prefs = getSharedPreferences("CognitaPrefs", Context.MODE_PRIVATE)
-        val token = prefs.getString("JWT_TOKEN", "") ?: ""
+        setupClickListeners()
+        setupObservers()
+        setupBottomNavigation()
 
-        viewModel.state.observe(this, Observer { state ->
-            when (state) {
-                is DashboardState.Success -> {
-                    tvRank.text = state.stats.rank
-                    tvSp.text = "${state.stats.sp} SP"
-                }
-                is DashboardState.Error -> {
-                    Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
-                }
-                is DashboardState.Loading -> {
-                    tvRank.text = "Loading..."
-                }
-            }
-        })
+        // TODO: Replace with real user ID logic from your auth session / SharedPreferences
+        val userId = intent.getStringExtra("USER_ID") ?: "current_user_id"
 
-        if (token.isNotEmpty()) viewModel.loadStats(token)
-
-        btnBlitz.setOnClickListener { launchExam("BLITZ") }
-        btnMock.setOnClickListener { launchExam("MOCK") }
+        // Trigger the backend fetch
+        // viewModel.fetchLiveDashboardData(userId)
     }
 
-    private fun launchExam(mode: String) {
-        val intent = Intent(this, ActiveExamActivity::class.java)
-        intent.putExtra("EXAM_MODE", mode)
-        startActivity(intent)
+    private fun setupClickListeners() {
+        // Main Action Cards using findViewById
+        findViewById<View>(R.id.btnStartExam).setOnClickListener {
+            startActivity(Intent(this, ActiveExamActivity::class.java))
+        }
+
+        findViewById<View>(R.id.btnViewResults).setOnClickListener {
+            startActivity(Intent(this, ResultsActivity::class.java))
+        }
+
+        findViewById<View>(R.id.btnGoals).setOnClickListener {
+            startActivity(Intent(this, GoalActivity::class.java))
+        }
+    }
+
+    private fun setupObservers() {
+        // Observe LiveData from your DashboardViewModel to populate real data dynamically
+        /*
+        viewModel.userData.observe(this) { data ->
+            findViewById<android.widget.TextView>(R.id.tvUserName).text = data.fullName ?: "Student!"
+            findViewById<android.widget.TextView>(R.id.tvExamsCount).text = data.totalExamsTaken?.toString() ?: "0"
+            findViewById<android.widget.TextView>(R.id.tvAvgScore).text = "${data.averageScore ?: 0}%"
+        }
+
+        viewModel.errorMessage.observe(this) { error ->
+            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+        }
+        */
+    }
+
+    private fun setupBottomNavigation() {
+        // Use findViewById directly for the navigation bar
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNavigation.selectedItemId = R.id.nav_dashboard
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_dashboard -> true // Already on dashboard
+
+                R.id.nav_exams -> {
+                    startActivity(Intent(this, ActiveExamActivity::class.java))
+                    true
+                }
+
+                R.id.nav_profile -> {
+                    // TODO: Route to your actual ProfileActivity once created
+                    Toast.makeText(this, "Profile module coming soon", Toast.LENGTH_SHORT).show()
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 }

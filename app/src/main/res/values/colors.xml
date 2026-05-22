@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Branding Colors (Matching modern Web UI) -->
+    <color name="colorPrimary">#8B5CF6</color> <!-- Vibrant Purple -->
+    <color name="colorPrimaryVariant">#6D28D9</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <color name="colorSecondary">#14B8A6</color> <!-- Teal Accent -->
+    <color name="colorSecondaryVariant">#0F766E</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+
+    <!-- Backgrounds & Surfaces (Dark Theme) -->
+    <color name="colorBackground">#0F172A</color> <!-- Deep Slate -->
+    <color name="colorSurface">#1E293B</color> <!-- Elevated Slate -->
+    <color name="colorSurfaceVariant">#334155</color>
+
+    <!-- Typography -->
+    <color name="colorTextPrimary">#F8FAFC</color>
+    <color name="colorTextSecondary">#94A3B8</color>
+    <color name="colorTextHint">#64748B</color>
+
+    <!-- Status Colors -->
+    <color name="colorSuccess">#10B981</color>
+    <color name="colorError">#EF4444</color>
+    <color name="colorWarning">#F59E0B</color>
 </resources>
