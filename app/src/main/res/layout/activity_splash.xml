@@ -113,11 +113,11 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="88dp"
+            android:layout_height="76dp"
             android:layout_gravity="center"
-            android:src="@drawable/cognita_logo"
-            android:contentDescription="Cognita logo" />
+            android:contentDescription="Cognita logo"
+            android:src="@drawable/cognita_logo" />
 
     </FrameLayout>
 
