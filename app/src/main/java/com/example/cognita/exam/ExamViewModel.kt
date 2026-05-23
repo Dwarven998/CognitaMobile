@@ -1,63 +1,107 @@
 package com.example.cognita.exam
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class ExamViewModel : ViewModel() {
+
+    // Use the repository instead of creating the API interface directly here
     private val repository = ExamRepository()
 
-    val questions = MutableLiveData<List<Question>>()
-    val currentQuestionIndex = MutableLiveData(0)
-    val userAnswers = mutableMapOf<Int, Int>()
+    private val _questions = MutableLiveData<List<Question>>()
 
-    // NEW: State tracker for submission
-    private val _submissionState = MutableLiveData<ExamSubmissionState>(ExamSubmissionState.Idle)
-    val submissionState: LiveData<ExamSubmissionState> = _submissionState
+    private val _currentQuestionIndex = MutableLiveData(0)
 
-    fun loadExam(token: String, mode: String) {
-        repository.fetchQuestions(token, mode) { result ->
-            if (result != null) {
-                questions.value = result
+    private val _currentQuestion = MutableLiveData<Question?>()
+    val currentQuestion: LiveData<Question?> = _currentQuestion
+
+    private val _progressState = MutableLiveData<ExamProgress>()
+    val progressState: LiveData<ExamProgress> = _progressState
+
+    private val _examFinishedEvent = MutableLiveData<Boolean>()
+    val examFinishedEvent: LiveData<Boolean> = _examFinishedEvent
+
+    var finalScore: Int = 0
+    var totalQuestions: Int = 0
+
+    private val userAnswers = mutableMapOf<Int, String>()
+
+    fun fetchQuestions(mode: String = "MOCK", domain: String? = null) {
+        viewModelScope.launch {
+            try {
+                // Call the repository layer
+                val response = repository.fetchQuestions(mode, domain)
+                if (response.isSuccessful && response.body() != null) {
+                    val qList = response.body()!!
+                    _questions.value = qList
+                    totalQuestions = qList.size
+
+                    if (qList.isNotEmpty()) {
+                        updateStateForIndex(0)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
-    fun selectAnswer(questionIndex: Int, optionIndex: Int) {
-        userAnswers[questionIndex] = optionIndex
+    fun submitAnswerAndNext(selectedAnswer: String, userEmail: String, mode: String) {
+        val currentIndex = _currentQuestionIndex.value ?: 0
+        userAnswers[currentIndex] = selectedAnswer
+
+        val qList = _questions.value ?: return
+
+        if (currentIndex < qList.size - 1) {
+            updateStateForIndex(currentIndex + 1)
+        } else {
+            submitFinalExam(userEmail, mode)
+        }
     }
 
-    private fun calculateScore(): Int {
+    fun forceSubmitExam(userEmail: String, mode: String) {
+        submitFinalExam(userEmail, mode)
+    }
+
+    private fun submitFinalExam(userEmail: String, mode: String) {
+        val qList = _questions.value ?: return
+
         var score = 0
-        questions.value?.forEachIndexed { index, question ->
-            if (userAnswers[index] == question.correctOptionIndex) {
+        for (i in qList.indices) {
+            if (userAnswers[i] == qList[i].correctAnswer) {
                 score++
             }
         }
-        return score
-    }
 
-    // NEW: The function that builds the payload and sends it to the server
-    fun submitExamSession(token: String, mode: String, status: String = "COMPLETED") {
-        _submissionState.value = ExamSubmissionState.Submitting
+        finalScore = score
 
-        val score = calculateScore()
-        val total = questions.value?.size ?: 0
-
-        val submission = ExamSessionSubmission(
-            examType = mode,
+        val sessionPayload = ExamSession(
+            userEmail = userEmail,
+            mode = mode,
             score = score,
-            totalItems = total,
-            status = status
+            totalItems = totalQuestions
         )
 
-        repository.submitExam(token, submission) { success ->
-            if (success) {
-                _submissionState.value = ExamSubmissionState.Success(score, total)
-            } else {
-                _submissionState.value = ExamSubmissionState.Error("Failed to sync with server")
+        viewModelScope.launch {
+            try {
+                val response = repository.submitExam(sessionPayload)
+                if (response.isSuccessful) {
+                    _examFinishedEvent.value = true
+                } else {
+                    _examFinishedEvent.value = true
+                }
+            } catch (e: Exception) {
+                _examFinishedEvent.value = true
             }
         }
+    }
+
+    private fun updateStateForIndex(index: Int) {
+        _currentQuestionIndex.value = index
+        _currentQuestion.value = _questions.value?.get(index)
+        _progressState.value = ExamProgress(index + 1, totalQuestions)
     }
 }

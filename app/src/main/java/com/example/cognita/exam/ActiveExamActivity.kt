@@ -32,18 +32,18 @@ class ActiveExamActivity : AppCompatActivity() {
     private lateinit var rbOptionD: RadioButton
     private lateinit var btnNext: Button
 
-    // Set dynamic duration based on API later; hardcoded to 15 mins for now
     private val EXAM_DURATION_MILLIS: Long = 15 * 60 * 1000
+    private val USER_EMAIL = "algian.aquillo@gmail.com" // Replace with real auth data
+    private val EXAM_MODE = "MOCK"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_active_exam)
 
-        // Initialize UI Elements with findViewById
         tvTimer = findViewById(R.id.tvTimer)
         tvQuestionProgress = findViewById(R.id.tvQuestionProgress)
         pbExamProgress = findViewById(R.id.pbExamProgress)
-        tvQuestionText = findViewById(R.id.tvQuestionText) // Matches XML precisely
+        tvQuestionText = findViewById(R.id.tvQuestionText)
         rgOptions = findViewById(R.id.rgOptions)
         rbOptionA = findViewById(R.id.rbOptionA)
         rbOptionB = findViewById(R.id.rbOptionB)
@@ -56,15 +56,13 @@ class ActiveExamActivity : AppCompatActivity() {
         setupObservers()
         setupListeners()
 
-        // Trigger API fetch for questions from the ViewModel
-        // viewModel.fetchQuestions()
+        // Fetch questions from Spring Boot
+        viewModel.fetchQuestions(EXAM_MODE)
 
         startTimer(EXAM_DURATION_MILLIS)
     }
 
     private fun setupObservers() {
-        // Observe Current Question mapping to the dynamic UI
-        /*
         viewModel.currentQuestion.observe(this) { question ->
             if (question != null) {
                 tvQuestionText.text = question.text
@@ -73,18 +71,15 @@ class ActiveExamActivity : AppCompatActivity() {
                 rbOptionC.text = question.optionC
                 rbOptionD.text = question.optionD
 
-                // Clear the previously selected option visually
                 rgOptions.clearCheck()
             }
         }
 
-        // Observe Exam Progress to update progress bar
         viewModel.progressState.observe(this) { progress ->
             tvQuestionProgress.text = "Question ${progress.current} of ${progress.total}"
             pbExamProgress.max = progress.total
             pbExamProgress.progress = progress.current
 
-            // Switch button text on final question
             if (progress.current == progress.total) {
                 btnNext.text = "Submit Exam"
             } else {
@@ -92,13 +87,11 @@ class ActiveExamActivity : AppCompatActivity() {
             }
         }
 
-        // Observe when the backend calculates/finishes the exam
         viewModel.examFinishedEvent.observe(this) { isFinished ->
             if (isFinished) {
                 finishExam()
             }
         }
-        */
     }
 
     private fun setupListeners() {
@@ -110,7 +103,6 @@ class ActiveExamActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Map standard RadioButton selections to Data Layer answers
             val selectedAnswer = when (selectedOptionId) {
                 R.id.rbOptionA -> "A"
                 R.id.rbOptionB -> "B"
@@ -119,11 +111,7 @@ class ActiveExamActivity : AppCompatActivity() {
                 else -> ""
             }
 
-            // Send to backend/ViewModel logic
-            // viewModel.submitAnswerAndNext(selectedAnswer)
-
-            // Temporary progression for testing without backend connection
-            Toast.makeText(this, "Answer $selectedAnswer recorded", Toast.LENGTH_SHORT).show()
+            viewModel.submitAnswerAndNext(selectedAnswer, USER_EMAIL, EXAM_MODE)
         }
     }
 
@@ -136,7 +124,6 @@ class ActiveExamActivity : AppCompatActivity() {
 
                 tvTimer.text = String.format("%02d:%02d", minutes, seconds)
 
-                // Turn timer text Red when < 1 minute remains
                 if (millisUntilFinished < 60000) {
                     tvTimer.setTextColor(resources.getColor(android.R.color.holo_red_dark, theme))
                 }
@@ -145,23 +132,23 @@ class ActiveExamActivity : AppCompatActivity() {
             override fun onFinish() {
                 tvTimer.text = "00:00"
                 Toast.makeText(this@ActiveExamActivity, "Time is up!", Toast.LENGTH_LONG).show()
-                // Force submit via backend
-                // viewModel.forceSubmitExam()
-                finishExam()
+                viewModel.forceSubmitExam(USER_EMAIL, EXAM_MODE)
             }
         }.start()
     }
 
     private fun finishExam() {
         countDownTimer?.cancel()
-        val intent = Intent(this, ResultsActivity::class.java)
-        // Pass exam ID or session token via intent if required by your backend
+        val intent = Intent(this, ResultsActivity::class.java).apply {
+            putExtra("SCORE", viewModel.finalScore)
+            putExtra("TOTAL", viewModel.totalQuestions)
+        }
         startActivity(intent)
-        finish() // Removes ActiveExamActivity from the back stack
+        finish()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        countDownTimer?.cancel() // Prevent memory leaks
+        countDownTimer?.cancel()
     }
 }
