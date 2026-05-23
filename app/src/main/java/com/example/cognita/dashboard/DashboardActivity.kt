@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.cognita.R
@@ -11,6 +12,8 @@ import com.example.cognita.exam.ActiveExamActivity
 import com.example.cognita.goal.GoalActivity
 import com.example.cognita.results.ResultsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.cognita.login.LoginActivity
+import com.example.cognita.profile.ProfileActivity
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -29,11 +32,19 @@ class DashboardActivity : AppCompatActivity() {
         setupObservers()
         setupBottomNavigation()
 
-        // TODO: Replace with real user ID logic from your auth session / SharedPreferences
-        val userId = intent.getStringExtra("USER_ID") ?: "current_user_id"
+        // Retrieve stored email from SharedPreferences for dynamic session state
+        val sharedPrefs = getSharedPreferences("CognitaPrefs", MODE_PRIVATE)
+        val email = sharedPrefs.getString("USER_EMAIL", "") ?: ""
 
-        // Trigger the backend fetch
-        // viewModel.fetchLiveDashboardData(userId)
+        if (email.isEmpty()) {
+            // Redirect to Login if session does not exist
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+
+        // Trigger dynamic stats fetch from Spring Boot backend using email
+        viewModel.loadStats(email)
     }
 
     private fun setupClickListeners() {
@@ -49,21 +60,56 @@ class DashboardActivity : AppCompatActivity() {
         findViewById<View>(R.id.btnGoals).setOnClickListener {
             startActivity(Intent(this, GoalActivity::class.java))
         }
+
+        // Top-right Profile Avatar Logout Action
+        findViewById<View>(R.id.profileAvatar).setOnClickListener { view ->
+            val popup = PopupMenu(this, view)
+            popup.menu.add("Profile")
+            popup.menu.add("Logout")
+            popup.setOnMenuItemClickListener { item ->
+                when (item.title) {
+                    "Profile" -> {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                        true
+                    }
+                    "Logout" -> {
+                        // Clear preferences
+                        val sharedPrefs = getSharedPreferences("CognitaPrefs", MODE_PRIVATE)
+                        sharedPrefs.edit().remove("USER_EMAIL").apply()
+                        
+                        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+                        
+                        // Redirect to Login
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
     }
 
     private fun setupObservers() {
-        // Observe LiveData from your DashboardViewModel to populate real data dynamically
-        /*
-        viewModel.userData.observe(this) { data ->
-            findViewById<android.widget.TextView>(R.id.tvUserName).text = data.fullName ?: "Student!"
-            findViewById<android.widget.TextView>(R.id.tvExamsCount).text = data.totalExamsTaken?.toString() ?: "0"
-            findViewById<android.widget.TextView>(R.id.tvAvgScore).text = "${data.averageScore ?: 0}%"
+        viewModel.state.observe(this) { state ->
+            when (state) {
+                is DashboardState.Loading -> {
+                    // Fetching data
+                }
+                is DashboardState.Success -> {
+                    val data = state.stats
+                    findViewById<android.widget.TextView>(R.id.tvUserName).text = (data.fullName ?: data.name) + " 👋"
+                    findViewById<android.widget.TextView>(R.id.tvExamsCount).text = (data.totalExamsTaken ?: 0).toString()
+                    findViewById<android.widget.TextView>(R.id.tvAvgScore).text = "${data.averageScore ?: 0}%"
+                }
+                is DashboardState.Error -> {
+                    Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
-
-        viewModel.errorMessage.observe(this) { error ->
-            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-        }
-        */
     }
 
     private fun setupBottomNavigation() {
@@ -81,8 +127,7 @@ class DashboardActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_profile -> {
-                    // TODO: Route to your actual ProfileActivity once created
-                    Toast.makeText(this, "Profile module coming soon", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, ProfileActivity::class.java))
                     true
                 }
 

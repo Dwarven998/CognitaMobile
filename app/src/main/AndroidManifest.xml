@@ -16,6 +16,9 @@
             android:name=".results.ResultsActivity"
             android:exported="false" />
         <activity
+            android:name=".profile.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".goal.GoalActivity"
             android:exported="false" />
         <activity

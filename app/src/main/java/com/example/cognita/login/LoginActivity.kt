@@ -40,8 +40,11 @@ class LoginActivity : AppCompatActivity() {
                     btnLogin.isEnabled = true
                     btnLogin.text = "LOGIN"
 
-                    // Note: Since the backend doesn't send a token,
-                    // you cannot save a token here yet.
+                    // Save user email in SharedPreferences for session tracking
+                    val email = etEmail.text.toString().trim()
+                    val sharedPrefs = getSharedPreferences("CognitaPrefs", Context.MODE_PRIVATE)
+                    sharedPrefs.edit().putString("USER_EMAIL", email).apply()
+
                     Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
                     viewModel.resetState()
 

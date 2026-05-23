@@ -5,64 +5,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:padding="24dp">
+    android:background="@drawable/bg_splash_main"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="0dp">
 
-    <ProgressBar
-        android:id="@+id/pbExamProgress"
+    <!-- Subtle orb top right -->
+    <View android:layout_width="200dp" android:layout_height="200dp"
+        android:background="@drawable/bg_orb_blue"
+        android:translationX="60dp" android:translationY="-40dp" android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Progress bar + Timer row -->
+    <ProgressBar android:id="@+id/pbExamProgress"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="8dp"
-        android:progressDrawable="@drawable/bg_button_primary"
+        android:layout_width="0dp" android:layout_height="8dp"
+        android:progressDrawable="@drawable/bg_exam_progress"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tvTimer"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="14dp"
         tools:progress="40" />
 
-    <TextView
-        android:id="@+id/tvTimer"
-        android:layout_width="51dp"
-        android:layout_height="20dp"
-        android:textColor="@color/colorSecondary"
-        android:textSize="18sp"
-        android:textStyle="bold"
+    <TextView android:id="@+id/tvTimer"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textColor="#60A5FA" android:textSize="16sp" android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/pbExamProgress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14:59" />
 
-    <TextView
-        android:id="@+id/tvQuestionProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Question 4 of 10"
-        android:textColor="@color/colorTextSecondary"
-        android:textSize="14sp"
+    <!-- Question progress + flag -->
+    <TextView android:id="@+id/tvQuestionProgress"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:textColor="#94A3B8" android:textSize="13sp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/pbExamProgress"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnFlagQuestion"
+        tools:text="Question 4 of 10" />
 
-    <ImageButton
-        android:id="@+id/btnFlagQuestion"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+    <ImageButton android:id="@+id/btnFlagQuestion"
+        android:layout_width="40dp" android:layout_height="40dp"
+        android:background="@drawable/bg_btn_back_dark"
         android:src="@drawable/ic_flag"
         android:contentDescription="Flag Question"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvQuestionProgress"
         app:layout_constraintBottom_toBottomOf="@id/tvQuestionProgress" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/colorSurface"
-        app:cardCornerRadius="16dp"
+    <!-- Question card -->
+    <com.google.android.material.card.MaterialCardView android:id="@+id/cardQuestion"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        app:cardBackgroundColor="#0D1B3E"
+        app:cardCornerRadius="18dp"
         app:strokeWidth="1dp"
-        app:strokeColor="@color/colorSurfaceVariant"
+        app:strokeColor="#2563EB30"
+        app:cardElevation="0dp"
         app:layout_constraintTop_toBottomOf="@id/tvQuestionProgress">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,125 +73,113 @@
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <ImageView
-                android:id="@+id/ivOblationLogo"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:alpha="0.05"
+            <ImageView android:id="@+id/ivOblationLogo"
+                android:layout_width="48dp" android:layout_height="48dp"
+                android:alpha="0.04"
                 android:src="@drawable/up_oblation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/tvQuestionText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="What is the time complexity of a binary search algorithm?"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="18sp"
-                android:lineSpacingExtra="4dp"
+            <TextView android:id="@+id/tvQuestionText"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="#F1F5F9" android:textSize="17sp"
+                android:lineSpacingExtra="5dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="What is the time complexity of a binary search algorithm?" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
+    <!-- Options scroll -->
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_marginTop="16dp" android:layout_marginBottom="12dp"
         android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/cardQuestion"
         app:layout_constraintBottom_toTopOf="@id/btnNext">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/rgOptions"
+            <RadioGroup android:id="@+id/rgOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <RadioButton
-                    android:id="@+id/rbOptionA"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:background="@drawable/bg_rounded_card"
-                    android:buttonTint="@color/colorPrimary"
-                    android:padding="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/colorTextPrimary"
+                <RadioButton android:id="@+id/rbOptionA"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:background="@drawable/bg_dark_option"
+                    android:buttonTint="#2563EB"
+                    android:paddingStart="16dp" android:paddingEnd="16dp"
+                    android:paddingTop="14dp" android:paddingBottom="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#CBD5E1" android:textSize="14sp"
                     tools:text="O(n)" />
 
-                <RadioButton
-                    android:id="@+id/rbOptionB"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:background="@drawable/bg_rounded_card"
-                    android:buttonTint="@color/colorPrimary"
-                    android:padding="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/colorTextPrimary"
+                <RadioButton android:id="@+id/rbOptionB"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:background="@drawable/bg_dark_option"
+                    android:buttonTint="#2563EB"
+                    android:paddingStart="16dp" android:paddingEnd="16dp"
+                    android:paddingTop="14dp" android:paddingBottom="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#CBD5E1" android:textSize="14sp"
                     tools:text="O(log n)" />
 
-                <RadioButton
-                    android:id="@+id/rbOptionC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:background="@drawable/bg_rounded_card"
-                    android:buttonTint="@color/colorPrimary"
-                    android:padding="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/colorTextPrimary"
+                <RadioButton android:id="@+id/rbOptionC"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:background="@drawable/bg_dark_option"
+                    android:buttonTint="#2563EB"
+                    android:paddingStart="16dp" android:paddingEnd="16dp"
+                    android:paddingTop="14dp" android:paddingBottom="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#CBD5E1" android:textSize="14sp"
                     tools:text="O(n^2)" />
 
-                <RadioButton
-                    android:id="@+id/rbOptionD"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:background="@drawable/bg_rounded_card"
-                    android:buttonTint="@color/colorPrimary"
-                    android:padding="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/colorTextPrimary"
+                <RadioButton android:id="@+id/rbOptionD"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:background="@drawable/bg_dark_option"
+                    android:buttonTint="#2563EB"
+                    android:paddingStart="16dp" android:paddingEnd="16dp"
+                    android:paddingTop="14dp" android:paddingBottom="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#CBD5E1" android:textSize="14sp"
                     tools:text="O(1)" />
+
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/tvTriviaEntry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_rounded_card"
+            <TextView android:id="@+id/tvTriviaEntry"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_dark_card"
                 android:padding="16dp"
-                android:textColor="@color/colorTextSecondary"
-                android:textSize="15sp"
+                android:textColor="#94A3B8" android:textSize="14sp"
                 android:lineSpacingExtra="4dp"
                 android:visibility="gone"
-                tools:text="Trivia entry: Binary search repeatedly divides the search interval in half."
+                tools:text="Trivia: Binary search repeatedly divides the search interval in half."
                 tools:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>
 
+    <!-- Next button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnNext"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_width="match_parent" android:layout_height="54dp"
         android:text="Next Question"
-        android:textColor="@color/colorOnPrimary"
-        android:background="@drawable/bg_button_primary"
+        android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold"
+        android:letterSpacing="0.04"
         app:backgroundTint="@null"
+        android:background="@drawable/bg_btn_primary"
         app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
