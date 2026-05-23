@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_splash_main">
+
+    <!-- ── Decorative orb top-right (bleeds off screen) ── -->
+    <View
+        android:id="@+id/orbTopRight"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:background="@drawable/bg_orb_blue"
+        android:translationX="80dp"
+        android:translationY="-80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ── Decorative orb bottom-left ── -->
+    <View
+        android:id="@+id/orbBottomLeft"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:background="@drawable/bg_orb_teal"
+        android:translationX="-60dp"
+        android:translationY="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- ── Floating accent dots ── -->
+    <View
+        android:id="@+id/dotOne"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/bg_dot"
+        android:alpha="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="180dp" />
+
+    <View
+        android:id="@+id/dotTwo"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:background="@drawable/bg_dot"
+        android:alpha="0.4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="260dp" />
+
+    <View
+        android:id="@+id/dotThree"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:background="@drawable/bg_dot"
+        android:alpha="0.35"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="220dp" />
+
+    <!-- ── Content chain ── -->
+
+    <!-- Outer ring (largest) -->
+    <View
+        android:id="@+id/ringOuter"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
+        android:background="@drawable/bg_ring_outer"
+        app:layout_constraintBottom_toTopOf="@+id/tvBrandName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <!-- Inner ring -->
+    <View
+        android:id="@+id/ringInner"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:background="@drawable/bg_ring_inner"
+        app:layout_constraintBottom_toBottomOf="@+id/ringOuter"
+        app:layout_constraintEnd_toEndOf="@+id/ringOuter"
+        app:layout_constraintStart_toStartOf="@+id/ringOuter"
+        app:layout_constraintTop_toTopOf="@+id/ringOuter" />
+
+    <!-- Glow halo behind logo -->
+    <View
+        android:id="@+id/logoGlow"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@drawable/bg_logo_glow"
+        app:layout_constraintBottom_toBottomOf="@+id/ringOuter"
+        app:layout_constraintEnd_toEndOf="@+id/ringOuter"
+        app:layout_constraintStart_toStartOf="@+id/ringOuter"
+        app:layout_constraintTop_toTopOf="@+id/ringOuter" />
+
+    <!-- Logo circle container -->
+    <FrameLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:background="@drawable/bg_logo_circle"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ringOuter"
+        app:layout_constraintEnd_toEndOf="@+id/ringOuter"
+        app:layout_constraintStart_toStartOf="@+id/ringOuter"
+        app:layout_constraintTop_toTopOf="@+id/ringOuter">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/cognita_logo"
+            android:contentDescription="Cognita logo" />
+
+    </FrameLayout>
+
+    <!-- ── Brand text ── -->
+    <TextView
+        android:id="@+id/tvBrandName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Cognita"
+        android:textColor="#F8FAFC"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.02"
+        app:layout_constraintBottom_toTopOf="@+id/tvTagline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ringOuter" />
+
+    <!-- Blue underline accent -->
+    <View
+        android:id="@+id/brandAccent"
+        android:layout_width="40dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_accent_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBrandName" />
+
+    <TextView
+        android:id="@+id/tvTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Your learning companion."
+        android:textColor="#94A3B8"
+        android:textSize="15sp"
+        android:letterSpacing="0.01"
+        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brandAccent" />
+
+    <!-- ── Buttons ── -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGetStarted"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="12dp"
+        android:text="Get Started"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:letterSpacing="0.04"
+        app:backgroundTint="@color/cognita_primary"
+        app:cornerRadius="14dp"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="48dp"
+        android:text="Log In"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:letterSpacing="0.04"
+        app:backgroundTint="#1A2A4A"
+        app:strokeColor="#FFFFFF30"
+        app:strokeWidth="1dp"
+        app:cornerRadius="14dp"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

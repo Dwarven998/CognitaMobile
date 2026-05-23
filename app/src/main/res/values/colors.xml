@@ -23,4 +23,16 @@
     <color name="colorSuccess">#10B981</color>
     <color name="colorError">#EF4444</color>
     <color name="colorWarning">#F59E0B</color>
+
+    <color name="cognita_primary">#2563EB</color> <!-- Tailwind Blue 600 -->
+    <color name="cognita_primary_dark">#1D4ED8</color> <!-- Tailwind Blue 700 -->
+    <color name="cognita_secondary">#10B981</color> <!-- Tailwind Emerald 500 -->
+    <color name="cognita_background">#F8FAFC</color> <!-- Tailwind Slate 50 -->
+    <color name="cognita_surface">#FFFFFF</color>
+    <color name="cognita_text_primary">#0F172A</color> <!-- Tailwind Slate 900 -->
+    <color name="cognita_text_secondary">#64748B</color> <!-- Tailwind Slate 500 -->
+    <color name="cognita_error">#EF4444</color> <!-- Tailwind Red 500 -->
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>
